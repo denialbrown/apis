@@ -52,4 +52,9 @@ router.post("/logIn/token",
   body("otp").exists().withMessage(Message.OTP_IS_REQUIRED).not().isEmpty(),
   userController.loginOtp);
 
+router.post("/add/img",[middleware.authenticateUser],
+   userController.addimg);
+
+
+
 module.exports = router

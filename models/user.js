@@ -40,7 +40,7 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
   otp: {
-    type: String, 
+    type: String,
   },
   otpCreatedAt: {
     type: Number,
@@ -60,6 +60,9 @@ const userSchema = new mongoose.Schema({
   },
   createdAt: Number,
   updatedAt: Number,
+  profileImage: {
+    type: String,
+  }
 }, {
   timestamps: true,
 });

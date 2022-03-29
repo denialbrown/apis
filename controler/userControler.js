@@ -5,15 +5,14 @@ const stateSchema = require("../models/state");
 const citySchema = require("../models/city");
 const userService = require("../services/userServices")
 const send = Service.sendResponse;
-const git = git 
+var multiparty = require('multiparty');
 
-const mailService =require("../helper/email")
+const mailService = require("../helper/email")
 let {
     HttpStatus,
     ErrorCode,
     Message,
 } = require("../helper/localization");
-
 
 module.exports = {
     signupUser: async function (req, res) {
@@ -115,9 +114,9 @@ module.exports = {
             console.log(user);
             const UserEmail = user.email
             const userOtp = user.otp
-            
-            await mailService.sendOtpInMail(UserEmail,userOtp)
-            
+
+            await mailService.sendOtpInMail(UserEmail, userOtp)
+
             const data = {
                 loginToken: await Service.generateToken(user),
             };
@@ -211,5 +210,15 @@ module.exports = {
         }
 
     },
+    addimg: async function (req, res) {
+        try {
+            var form = new multiparty.Form();
+        
+            form.parse(req);
+            console.log(form);
+        } catch (error) {
+            return send(res, HttpStatus.INTERNAL_SERVER_CODE, HttpStatus.INTERNAL_SERVER_CODE, Message.SOMETHING_WENT_WRONG);
+        }
+    }
 
 }

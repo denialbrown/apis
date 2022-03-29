@@ -20,31 +20,31 @@
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             properties:
- *               firstName:
- *                 type: string
- *                 example: abc 
- *               lastName:
- *                 type: string
- *                 example: abc 
- *               gender:
- *                 type: Number
- *                 example: 1
- *               dob:
- *                 type: string
- *                 example: abc  
- *               email:
- *                 type: string
- *                 example: dhaval@gmail.com
- *               phone:
- *                 type: string
- *                 example: 9898989898
- *               countryCode:
- *                 type: string
- *                 example: 91
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 firstName:
+ *                   type: string
+ *                   example: abc 
+ *                 lastName:
+ *                   type: string
+ *                   example: abc 
+ *                 gender:
+ *                   type: Number
+ *                   example: 1
+ *                 dob:
+ *                   type: string
+ *                   example: abc  
+ *                 email:
+ *                   type: string
+ *                   example: dhaval@gmail.com
+ *                 phone:
+ *                   type: string
+ *                   example: 9898989898
+ *                 countryCode:
+ *                   type: string
+ *                   example: 91
  *     responses:
  *       200:
  *         description: signup success
@@ -431,3 +431,60 @@
  *                    type: string
  */
 
+/**
+ * @swagger
+ * /add/img:
+ *   post:
+ *     summary: user sign-up or login
+ *     tags: [user]
+ *     parameters:
+ *      - in: header
+ *        name: nonce
+ *        required: true
+ *        default: 123456
+ *      - in: header
+ *        name: timestamp
+ *        required: true
+ *        default: 12345678
+ *      - in: header
+ *        name: token
+ *        required: true
+ *        default: 9067b6a045f321090ea476eaec169002c5e335a540cd77b5726c7547b2bf5209 
+ *     requestBody:
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               file:
+ *                 type: string
+ *                 format: binary
+ *     responses:
+ *       200:
+ *         description: success
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 responseCode:
+ *                   type: integer
+ *                 responseMessage:
+ *                    type: string
+ *                 responseData:
+ *                   type: object
+ *                   properties:
+ *                     loginToken:
+ *                       type: string
+ *       500:
+ *         description: Login failed
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 responsecode:
+ *                   type: integer
+ *                 responseMessage:
+ *                    type: string
+ */
