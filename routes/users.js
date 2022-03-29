@@ -7,6 +7,7 @@ const middleware = require("../helper/middlerware")
 let { Message } = require("../helper/localization");
 const { body } = require("express-validator");
 
+
 router.post("/signup",
 
   body("firstName").exists().withMessage(Message.FIRST_NAME_IS_REQUIRED).not().isEmpty().isLength(3).isAlpha().withMessage(Message.MINIMUM_CHARACTER),
@@ -53,7 +54,8 @@ router.post("/logIn/token",
   userController.loginOtp);
 
 router.post("/add/img",[middleware.authenticateUser],
-   userController.addimg);
+  userController.uploadImg
+  );
 
 
 

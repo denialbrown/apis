@@ -5,14 +5,15 @@ const stateSchema = require("../models/state");
 const citySchema = require("../models/city");
 const userService = require("../services/userServices")
 const send = Service.sendResponse;
-var multiparty = require('multiparty');
-
 const mailService = require("../helper/email")
+const fs = require('fs');
+
 let {
     HttpStatus,
     ErrorCode,
     Message,
 } = require("../helper/localization");
+const path = require("path");
 
 module.exports = {
     signupUser: async function (req, res) {
@@ -210,15 +211,31 @@ module.exports = {
         }
 
     },
-    addimg: async function (req, res) {
+    uploadImg: async function (req, res) {
         try {
-            var form = new multiparty.Form();
-        
-            form.parse(req);
-            console.log(form);
-        } catch (error) {
-            return send(res, HttpStatus.INTERNAL_SERVER_CODE, HttpStatus.INTERNAL_SERVER_CODE, Message.SOMETHING_WENT_WRONG);
+            console.log(req.files);
+            if (!req.files) {
+                return send(res, HttpStatus.BAD_REQUEST_STATUS_CODE, ErrorCode.REQUIRED_CODE, Message.FILE_REQUIRED, null);
+            }
+            const folderName = req.authUser._id.valueOf()
+            console.log(folderName);
+            // fs.mkdir('./uploads/' + folderName, (err) => {
+            //     if (err) {
+            //         console.log(err);
+            //     }
+            // })
+            console.log(req.files.file.name);
+            var filename = req.files.file.name
+            const extention = path.extname(req.files.file.name).slice(1)
+            console.log(extention);
+            const newName = Service.getCurrentTimeStampUnix()
+            var filename = newName + '.' + extention
+            console.log(filename);
+            console.log(req.files)
+            // string.replace(newFileName, filename)
+            // console.log(filename);
+        } catch (err) {
+            res.status(500).send(err);
         }
-    }
-
+    },
 }

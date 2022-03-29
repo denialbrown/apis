@@ -1,12 +1,12 @@
 const express = require('express');
-
+const fileupload =require('express-fileupload')
 const app = express()
 require("dotenv").config()
 app.use(express.json())
 app.use(express.urlencoded({
     extended: true
 }));
-
+app.use(fileupload())
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 app.use('/api', require("./routes/users"));

@@ -37,7 +37,8 @@ const Message = {
     ADDRESS_CHANGE_SUCCESSFULLY: "address updated sucessfully",
     ADDRESS_NOT_FOUND: "address not found ",
     ADDRESS_DELETE_SUCCESSFULLY: "address deleted sucessfully",
-    OTP_INVALID:"otp invalid "
+    OTP_INVALID:"otp invalid ",
+    FILE_REQUIRED:"file is required"
 
 };
 
