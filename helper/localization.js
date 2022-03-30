@@ -38,8 +38,9 @@ const Message = {
     ADDRESS_NOT_FOUND: "address not found ",
     ADDRESS_DELETE_SUCCESSFULLY: "address deleted sucessfully",
     OTP_INVALID:"otp invalid ",
-    FILE_REQUIRED:"file is required"
-
+    FILE_REQUIRED:"file is required",
+    IMAGE_UPLOADED_SUCCESS:"image uploaded sucessfully",
+    IMAGE_INVALID:"image not uploaded"
 };
 
 /**

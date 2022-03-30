@@ -1,18 +1,25 @@
 const express = require('express');
-const fileupload =require('express-fileupload')
+const fileupload = require('express-fileupload')
 const app = express()
 require("dotenv").config()
+const path = require('path')
+
 app.use(express.json())
 app.use(express.urlencoded({
     extended: true
 }));
+app.set('view engine', 'ejs')
+app.use(express.static(path.join(__dirname, 'public')));
+
 app.use(fileupload())
 const swaggerJSDoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 app.use('/api', require("./routes/users"));
 app.use('/api', require("./routes/address"));
-
-
+app.use('/', require("./routes/admin"))
+app.use('/signUp', require("./routes/admin"))
+app.use('/signup', require("./routes/admin"))
+app.use('/logIn', require("./routes/admin"))
 const swaggerDefinition = {
     openapi: '3.0.0',
     info: {
@@ -50,21 +57,17 @@ app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 const mongoose = require("mongoose");
 var url = process.env.MONGODB_URL;
-console.log(url)
-try {
-    mongoose.connect(url, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true
-    }, function (err, db) {
+mongoose.connect(url, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+}, function (err, db) {
 
-        if (err) throw err;
-        app.listen(8000, () => {
+    if (err) throw err;
+    app.listen(8000, () => {
 
-            console.log('Server is up on PORT 8000');
+        console.log('Server is up on PORT 8000');
 
-        })
-        
-    });
-} catch (err) {
-    console.log(err)
-}
+    })
+
+});
+

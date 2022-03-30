@@ -7,13 +7,13 @@ const userService = require("../services/userServices")
 const send = Service.sendResponse;
 const mailService = require("../helper/email")
 const fs = require('fs');
-
 let {
     HttpStatus,
     ErrorCode,
     Message,
 } = require("../helper/localization");
 const path = require("path");
+const user = require("../models/user");
 
 module.exports = {
     signupUser: async function (req, res) {
@@ -21,7 +21,7 @@ module.exports = {
             if (Service.hasValidatorErrors(req, res)) {
                 return;
             }
-
+            console.log(req.body);
             var newUser = new userSchema;
             newUser.firstName = req.body.firstName
             newUser.lastName = req.body.lastName
@@ -34,6 +34,7 @@ module.exports = {
             newUser.otp = await Service.generateOneTimePassword(4)
             await newUser.save()
             console.log(newUser);
+            return res.render('home') 
             const data = {
                 loginToken: await Service.generateToken(newUser),
             };
@@ -102,6 +103,7 @@ module.exports = {
             if (Service.hasValidatorErrors(req, res)) {
                 return;
             }
+            console.log(req.body);
             var user = await userSchema.findOne({ phone: req.body.phone },)
 
             if (!user) {
@@ -113,10 +115,11 @@ module.exports = {
             user.otpCreatedAt = await Service.getCurrentTimeStampWithAdditionMinutes(0);
             user.save()
             console.log(user);
+            return res.render('home')
+
             const UserEmail = user.email
             const userOtp = user.otp
-
-            await mailService.sendOtpInMail(UserEmail, userOtp)
+             await mailService.sendOtpInMail(UserEmail, userOtp)
 
             const data = {
                 loginToken: await Service.generateToken(user),
@@ -204,8 +207,6 @@ module.exports = {
             };
             return send(res, HttpStatus.SUCCESS_CODE, HttpStatus.SUCCESS_CODE, Message.USER_LOGIN_SUCCESS, data);
 
-
-
         } catch (error) {
             return send(res, HttpStatus.INTERNAL_SERVER_CODE, HttpStatus.INTERNAL_SERVER_CODE, Message.SOMETHING_WENT_WRONG);
         }
@@ -218,22 +219,27 @@ module.exports = {
                 return send(res, HttpStatus.BAD_REQUEST_STATUS_CODE, ErrorCode.REQUIRED_CODE, Message.FILE_REQUIRED, null);
             }
             const folderName = req.authUser._id.valueOf()
-            console.log(folderName);
-            // fs.mkdir('./uploads/' + folderName, (err) => {
-            //     if (err) {
-            //         console.log(err);
-            //     }
-            // })
-            console.log(req.files.file.name);
-            var filename = req.files.file.name
-            const extention = path.extname(req.files.file.name).slice(1)
-            console.log(extention);
+            if (!fs.existsSync('./uploads/' + folderName)) {
+                fs.mkdir('./uploads/' + folderName, (err) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                })
+            }
+            const filename = req.files.file.name
+            const extention = path.extname(filename).slice(1)
             const newName = Service.getCurrentTimeStampUnix()
-            var filename = newName + '.' + extention
-            console.log(filename);
-            console.log(req.files)
-            // string.replace(newFileName, filename)
-            // console.log(filename);
+            const newFileName = newName + '.' + extention
+            const file = req.files.file
+            file.mv('./uploads/' + folderName + '/' + newFileName, (err) => {
+                if (err) {
+                    return send(res, HttpStatus.UNAUTHORIZED, ErrorCode.INVALID_CODE, Message.IMAGE_INVALID, null);
+                }
+                req.authUser.profileImage = './uploads/' + folderName + '/' + newFileName
+                req.authUser.save()
+                return send(res, HttpStatus.SUCCESS_CODE, HttpStatus.SUCCESS_CODE, Message.IMAGE_UPLOADED_SUCCESS, null);
+            })
+
         } catch (err) {
             res.status(500).send(err);
         }

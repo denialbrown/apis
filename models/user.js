@@ -7,16 +7,12 @@ const {
   model
 } = require("mongoose");
 
-
-
 const userSchema = new mongoose.Schema({
   firstName: {
     type: String,
-    required: true,
   },
   lastName: {
     type: String,
-    required: true,
   },
   gender: {
     type: String,
@@ -25,19 +21,15 @@ const userSchema = new mongoose.Schema({
   },
   dob: {
     type: String,
-    required: true,
   },
   email: {
     type: String,
-    required: true,
   },
   phone: {
     type: String,
-    required: true,
   },
   countryCode: {
     type: String,
-    required: true,
   },
   otp: {
     type: String,

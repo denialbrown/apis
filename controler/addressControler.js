@@ -10,7 +10,6 @@ let {
     ErrorCode,
 } = require("../helper/localization");
 
-
 module.exports = {
 
     address: async function (req, res) {
@@ -180,7 +179,7 @@ module.exports = {
         }
     },
     deleteAddress: async function (req, res) {
-
+         
         try {
             if (Service.hasValidatorErrors(req, res)) {
                 return;
@@ -202,6 +201,6 @@ module.exports = {
             console.log(error);
             return send(res, HttpStatus.INTERNAL_SERVER_CODE, HttpStatus.INTERNAL_SERVER_CODE, Message.SOMETHING_WENT_WRONG);
         }
-
+           
     }
 }
